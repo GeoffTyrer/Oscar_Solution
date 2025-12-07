@@ -44,3 +44,7 @@ jobs:
           name: build-${{ matrix.configuration }}
           path: |
             **/bin/${{ matrix.configuration }}/**
+      - name: Run tests
+        run: |
+          dotnet test OscarModel.Tests\OscarModel.Tests.csproj --configuration ${{ matrix.configuration }} --no-build --verbosity normal
+        continue-on-error: false
