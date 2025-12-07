@@ -7,6 +7,8 @@ Quick summary
 - `/.vscode/tasks.json` — build tasks for Debug and Release for both apps.
 - `.gitignore` — ignores build outputs and user files.
 
+[![CI](https://github.com/GeoffTyrer/Oscar_Solution/actions/workflows/ci.yml/badge.svg)](https://github.com/GeoffTyrer/Oscar_Solution/actions)
+
 How to use (Windows / PowerShell)
 
 Build from the command line:
@@ -29,3 +31,7 @@ gh repo create <your-github-username>/<repo-name> --public --source . --remote o
 Notes:
 - If you prefer not to use `gh`, you can create an empty repo on GitHub via the website and then follow the instructions it shows to push your local `main` branch.
 - I initialized this workspace with a local Git repo and made an initial commit. If you'd like, I can try to create the remote for you — you'll need to authenticate locally with `gh auth login` and then I can run the push command.
+
+Continuous Integration
+
+This repository includes a GitHub Actions workflow that builds the solution on Windows for pushes and pull requests to `main`. The workflow file is `.github/workflows/ci.yml`.
