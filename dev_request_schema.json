@@ -1,0 +1,70 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Dev Request Schema",
+  "description": "Template schema and examples for requesting repo changes from the assistant.",
+  "type": "object",
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": ["create_file","apply_patch","run_commands","create_branch","commit","push","create_pr","run_tests","explain","multi"]
+    },
+    "description": { "type": "string" },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": { "type": "string" },
+          "content": { "type": "string" }
+        },
+        "required": ["path","content"]
+      }
+    },
+    "patch": { "type": "string" },
+    "commands": { "type": "array", "items": { "type": "string" } },
+    "branch": { "type": "string" },
+    "commit_message": { "type": "string" },
+    "push": {
+      "type": "object",
+      "properties": {
+        "remote": { "type": "string" },
+        "branch": { "type": "string" }
+      }
+    },
+    "run_tests": {
+      "type": "object",
+      "properties": {
+        "files": { "type": "array", "items": { "type": "string" } },
+        "mode": { "type": "string", "enum": ["run","coverage"] }
+      }
+    },
+    "priority": { "type": "string", "enum": ["low","normal","high"] },
+    "no_secrets": { "type": "boolean" },
+    "execute": { "type": "boolean" }
+  },
+  "required": ["action"],
+  "examples": [
+    {
+      "action": "create_file",
+      "description": "Add CONTRIBUTING.md",
+      "files": [
+        { "path": "CONTRIBUTING.md", "content": "# Contributing\n\nPlease open issues or PRs..." }
+      ],
+      "commit_message": "Add CONTRIBUTING.md",
+      "execute": true
+    },
+    {
+      "action": "apply_patch",
+      "description": "Small code fix",
+      "patch": "*** Begin Patch\n*** Update File: OscarModel_Lib/Class1.cs\n@@\n-    public class Class1 { }\n+    public class Class1 { /* fix placeholder */ }\n*** End Patch",
+      "commit_message": "Fix: Class1 placeholder",
+      "execute": true
+    },
+    {
+      "action": "run_commands",
+      "description": "Build solution and run tests",
+      "commands": ["dotnet build Oscar.sln -c Debug","dotnet test"],
+      "execute": true
+    }
+  ]
+}
