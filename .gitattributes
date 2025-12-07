@@ -1,0 +1,5 @@
+# Ensure consistent line endings
+* text=auto eol=crlf
+
+*.cs linguist-language=C#
+*.xaml linguist-language=XAML
