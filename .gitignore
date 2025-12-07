@@ -1,0 +1,28 @@
+# Visual Studio / .NET
+.vs/
+bin/
+obj/
+TestResults/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider
+.idea/
+
+# VS Code
+.vscode/**/*.code-workspace
+
+# NuGet
+*.nupkg
+nupkg/
+
+# OS files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*.DS_Store
+
+# User-specific files
+secrets.json

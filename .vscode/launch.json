@@ -1,0 +1,55 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch OscarAdmin (Debug, Windows)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build OscarAdmin (Debug)",
+      "program": "${workspaceFolder}/OscarAdmin_App/bin/Debug/net10.0-windows10.0.19041.0/OscarAdmin.exe",
+      "args": [],
+      "cwd": "${workspaceFolder}/OscarAdmin_App",
+      "stopAtEntry": false,
+      "console": "internalConsole"
+    },
+    {
+      "name": "Launch OscarAdmin (Release, Windows)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build OscarAdmin (Release)",
+      "program": "${workspaceFolder}/OscarAdmin_App/bin/Release/net10.0-windows10.0.19041.0/OscarAdmin.exe",
+      "args": [],
+      "cwd": "${workspaceFolder}/OscarAdmin_App",
+      "stopAtEntry": false,
+      "console": "internalConsole"
+    },
+    {
+      "name": "Launch OscarView (Debug, Windows)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build OscarView (Debug)",
+      "program": "${workspaceFolder}/OscarView_App/bin/Debug/net10.0-windows10.0.19041.0/OscarView.exe",
+      "args": [],
+      "cwd": "${workspaceFolder}/OscarView_App",
+      "stopAtEntry": false,
+      "console": "internalConsole"
+    },
+    {
+      "name": "Launch OscarView (Release, Windows)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build OscarView (Release)",
+      "program": "${workspaceFolder}/OscarView_App/bin/Release/net10.0-windows10.0.19041.0/OscarView.exe",
+      "args": [],
+      "cwd": "${workspaceFolder}/OscarView_App",
+      "stopAtEntry": false,
+      "console": "internalConsole"
+    },
+    {
+      "name": "Attach to Process (coreclr)",
+      "type": "coreclr",
+      "request": "attach",
+      "processId": "${command:pickProcess}"
+    }
+  ]
+}

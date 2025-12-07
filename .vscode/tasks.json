@@ -1,0 +1,57 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build OscarAdmin (Debug)",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/OscarAdmin_App/OscarAdmin.csproj",
+        "/property:Configuration=Debug"
+      ],
+      "problemMatcher": ["$msCompile"],
+      "group": "build",
+      "presentation": { "reveal": "silent" }
+    },
+    {
+      "label": "build OscarAdmin (Release)",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/OscarAdmin_App/OscarAdmin.csproj",
+        "/property:Configuration=Release"
+      ],
+      "problemMatcher": ["$msCompile"],
+      "group": "build",
+      "presentation": { "reveal": "silent" }
+    },
+    {
+      "label": "build OscarView (Debug)",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/OscarView_App/OscarView.csproj",
+        "/property:Configuration=Debug"
+      ],
+      "problemMatcher": ["$msCompile"],
+      "group": "build",
+      "presentation": { "reveal": "silent" }
+    },
+    {
+      "label": "build OscarView (Release)",
+      "command": "dotnet",
+      "type": "process",
+      "args": [
+        "build",
+        "${workspaceFolder}/OscarView_App/OscarView.csproj",
+        "/property:Configuration=Release"
+      ],
+      "problemMatcher": ["$msCompile"],
+      "group": "build",
+      "presentation": { "reveal": "silent" }
+    }
+  ]
+}
