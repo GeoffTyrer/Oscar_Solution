@@ -1,0 +1,9 @@
+{
+  "action": "run_commands",
+  "description": "Example: build solution (for local run)",
+  "commands": [
+    "dotnet build Oscar.sln -c Debug",
+    "dotnet build Oscar.sln -c Release"
+  ],
+  "execute": false
+}

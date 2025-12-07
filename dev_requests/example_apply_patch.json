@@ -1,0 +1,8 @@
+{
+  "action": "apply_patch",
+  "description": "Example: small change placeholder in OscarModel",
+  "patch": "*** Begin Patch\n*** Update File: OscarModel_Lib/Class1.cs\n@@\n-namespace OscarModel_Lib\n-{\n-    public class Class1\n-    {\n-    }\n-}\n+namespace OscarModel_Lib\n+{\n+    // Example placeholder change — safe no-op for template purposes
+    public class Class1\n+    {\n+    }\n+}\n*** End Patch",
+  "commit_message": "chore: example patch (no-op)",
+  "execute": false
+}
