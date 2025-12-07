@@ -35,3 +35,11 @@ Notes:
 Continuous Integration
 
 This repository includes a GitHub Actions workflow that builds the solution on Windows for pushes and pull requests to `main`. The workflow file is `.github/workflows/ci.yml`.
+
+Artifacts
+
+- Each workflow run uploads build outputs for both `Debug` and `Release` configurations as job artifacts. You can download them from the run details in the Actions tab (look for `build-Debug` and `build-Release`).
+
+Badge
+
+- The CI badge at the top shows the status of the `CI` workflow for the `main` branch.

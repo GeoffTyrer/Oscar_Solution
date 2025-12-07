@@ -8,8 +8,11 @@ on:
 
 jobs:
   build:
-    name: Build on Windows
+    name: Build (Windows)
     runs-on: windows-latest
+    strategy:
+      matrix:
+        configuration: [ Debug, Release ]
 
     steps:
       - name: Checkout
@@ -31,5 +34,13 @@ jobs:
       - name: Restore
         run: dotnet restore Oscar.sln
 
-      - name: Build (Release)
-        run: dotnet build Oscar.sln --configuration Release --no-restore
+      - name: Build
+        run: dotnet build Oscar.sln --configuration ${{ matrix.configuration }} --no-restore
+
+      - name: Collect build artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ matrix.configuration }}
+          path: |
+            **/bin/${{ matrix.configuration }}/**
