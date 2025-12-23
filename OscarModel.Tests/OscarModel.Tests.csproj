@@ -7,15 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.3.0" />
-    <PackageReference Include="xunit" Version="2.6.2" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.6.5" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+    <PackageReference Include="xunit" Version="2.8.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.0" />
     <PackageReference Include="FluentValidation" Version="11.6.0" />
-    <PackageReference Include="FluentValidation.TestHelper" Version="11.6.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\OscarModel_Lib\OscarModel.csproj" />
+    <ProjectReference Include="..\Oscar.Shared\Oscar.Shared.csproj" />
   </ItemGroup>
 
 </Project>
