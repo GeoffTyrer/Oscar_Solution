@@ -1,0 +1,122 @@
+{
+  "specType": "validation_error_handling",
+  "version": "1.0",
+  "title": "Uniform Validation Error Handling for Oscar projects",
+  "description": "Defines a reproducible approach to package validation errors and responses for both in-process C# calls and HTTP endpoints.",
+  "conventions": {
+    "envelope": {
+      "name": "Result",
+      "generic": true,
+      "shape": {
+        "Success": "bool",
+        "Data": "T|null",
+        "Errors": "ValidationError[]",
+        "Message": "string|null",
+        "StatusCode": "int|null"
+      },
+      "serialization": "JSON (same shape for HTTP and in-process when serializing)"
+    },
+    "validationError": {
+      "name": "ValidationError",
+      "shape": {
+        "Parameter": "string",
+        "Path": "string|null",
+        "Message": "string",
+        "Code": "string|null",
+        "AttemptedValue": "any|null",
+        "Metadata": "object|null"
+      },
+      "notes": "Use `Parameter` for top-level method parameter names; use `Path` (JSON Pointer or dot-path) for nested DTO properties."
+    },
+    "parameterPathConvention": {
+      "topLevel": "Parameter = method parameter name (e.g. 'author')",
+      "nested": "Path = JSON Pointer (RFC6901) e.g. '/author/AuthorEmail' or dot-path 'author.AuthorEmail'",
+      "normalization": "Client and server should compare case-insensitively after normalizing separators ('/' and '.')"
+    }
+  },
+  "httpMapping": {
+    "statusCodes": {
+      "validationFailure": 400,
+      "success": 200,
+      "created": 201,
+      "serverError": 500
+    },
+    "bodyOptions": {
+      "optionA": "Return `Result<T>` JSON body with `Success=false`, `Errors` populated (recommended for consistency).",
+      "optionB": "Return RFC7807 Problem Details with an `errors` array/dictionary mapping paths→messages (compatible with ASP.NET `ValidationProblemDetails`)."
+    },
+    "recommended": "Use `Result<T>` body with `statusCode=400` for validation errors to keep one uniform contract across transports."
+  },
+  "clientMappingRules": {
+    "bindRule": "Client binds form-control name to either `Parameter` or `Path` conventions.",
+    "highlighting": "Match `ValidationError.Parameter` or `ValidationError.Path` to control identifier; show `ValidationError.Message` as the field error text.",
+    "fallback": "If no exact match found, show generic form-level `Result.Message` or place errors in a summary area."
+  },
+  "serverResponsibilities": {
+    "validationPoints": [
+      "API/Interface input validation (model and DTO-level)",
+      "Service/business validation (uniqueness, cross-field rules)",
+      "Persistence-level checks (unique constraints) — convert DB constraint errors into `ValidationError`"
+    ],
+    "conversion": "All validators must return failures as `ValidationError` entries with `Parameter` and/or `Path` populated and a `Code` (machine token).",
+    "status": "Return HTTP 400 with `Result<T>` on validation failures; for in-process calls return `Result<T>` instance."
+  },
+  "codesAndLocalization": {
+    "errorCodeExamples": ["Required", "TooLong", "TooShort", "InvalidFormat", "Unique", "Range"],
+    "usage": "Provide `Code` so clients can map to localized messages or special UI behavior."
+  },
+  "implementationGuidelines": {
+    "dotnetShapes": {
+      "ResultClass": "public class Result<T> { public bool Success { get; set; } public T? Data { get; set; } public IReadOnlyList<ValidationError> Errors { get; set; } public string? Message { get; set; } public int? StatusCode { get; set; } }",
+      "ValidationErrorClass": "public class ValidationError { public string Parameter { get; set; } public string? Path { get; set; } public string Message { get; set; } public string? Code { get; set; } public object? AttemptedValue { get; set; } public IDictionary<string,object>? Metadata { get; set; } }",
+      "validatorStrategy": "Prefer a dedicated `AuthorValidator` (e.g., FluentValidation) to produce failures; add an adapter to convert validator results into `ValidationError` objects."
+    },
+    "placement": {
+      "models": "OscarModel_Lib/Models",
+      "validators": "OscarModel_Lib/Validators",
+      "transport": "Shared library OscarModel_Lib/Contracts or OscarModel_Lib/Infrastructure for `Result<T>` and `ValidationError`"
+    },
+    "uniqueness": "Enforce at DB level (unique index). On DB-constraint violation, map exception to `ValidationError` with `Code='Unique'` and `Parameter`/`Path` indicating the affected field."
+  },
+  "examples": {
+    "httpResponseExample": {
+      "statusCode": 400,
+      "body": {
+        "Success": false,
+        "Data": null,
+        "Errors": [
+          { "Parameter": "author", "Path": "/author/AuthorEmail", "Message": "Invalid email format", "Code": "InvalidFormat", "AttemptedValue": "bad@address" },
+          { "Parameter": "author", "Path": "/author/AuthorName", "Message": "AuthorName is required", "Code": "Required", "AttemptedValue": null }
+        ],
+        "Message": "Validation failed",
+        "StatusCode": 400
+      }
+    },
+    "inProcessExample": {
+      "call": "var result = authorService.Create(authorDto);",
+      "result": {
+        "Success": false,
+        "Errors": [
+          { "Parameter": "author", "Path": "author.AuthorName", "Message": "AuthorName is required", "Code": "Required" }
+        ],
+        "Message": "Validation failed"
+      }
+    }
+  },
+  "alentejoIntegration": {
+    "howToEncode": "Include this JSON `spec` as a top-level resource in project templates. Alentejo consumers should create code stubs for `Result<T>` and `ValidationError`, and scaffold a `ValidatorAdapter` that converts validator results into `ValidationError` entries.",
+    "exampleAlentejoPayload": {
+      "action": "create_spec",
+      "spec_name": "validation_error_handling",
+      "apply": false,
+      "targetSolution": "Oscar",
+      "targetProject": "OscarModel_Lib",
+      "payload": {}
+    }
+  },
+  "notes": [
+    "Keep `Parameter` values stable (don't frequently rename) — clients rely on them for control binding.",
+    "Prefer JSON Pointer for `Path` in cross-platform scenarios; dot-paths are acceptable and simpler for some clients.",
+    "Store `Code` constants in a shared enum or static class to avoid discrepancies between server and clients."
+  ]
+}
